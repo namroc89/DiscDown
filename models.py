@@ -9,7 +9,6 @@ def connect_db(app):
     db.init_app(app)
 
 class User(db.model):
-    """Creates user model"""
 
     __tablename__ = "users"
 
@@ -28,4 +27,9 @@ class User(db.model):
     bio = db.Column(db.String(200))
 
     avatar = db.Column(db.Text)
+
+
+
+
+    
 
