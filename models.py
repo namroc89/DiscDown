@@ -40,13 +40,13 @@ class User(db.Model):
 
     email = db.Column(db.String(50), unique=True, nullable=False)
 
-    password = db.Column(db.String(15), nullable=False)
+    password = db.Column(db.Text, nullable=False)
 
     bio = db.Column(db.String(200))
 
-    avatar = db.Column(db.Text)
+    fav_course = db.Column(db.Text)
 
-    favorite_courses = db.relationship('FavoriteCourse', backref="users")
+    avatar = db.Column(db.Text, default='/static/images/default_avatar.jpg')
 
     user_rounds = db.relationship('UserRound', backref="users")
 
@@ -70,19 +70,53 @@ class User(db.Model):
     def __repr__(self):
         return f"<User {self.id}, {self.username}>"
 
+    @classmethod
+    def authenticate(cls, username, password):
+        """Find a user with username and password. 
+        Checks to see if user matches hashed password.
+        returns false if username and password do not match.
+        """
+        user = cls.query.filter_by(username=username).first()
 
-class FavoriteCourse(db.Model):
+        if user:
+            is_auth = bcrypt.check_password_hash(user.password, password)
+            if is_auth:
+                return user
 
-    __tablename__ = "favorite_courses"
+        return False
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    @classmethod
+    def signup(cls, username, first_name, last_name, email, password):
+        """Sign up user.
+        Hashes password and adds user to system.
+        """
 
-    user_id = db.Column(db.Integer, db.ForeignKey(
-        'users.id', ondelete='cascade'))
+        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
 
-    course_id = db.Column(db.Integer, unique=True, nullable=False)
+        user = User(
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=hashed_pwd,
+        )
 
-    best_score = db.Column(db.Integer)
+        db.session.add(user)
+        return user
+
+
+# class FavoriteCourse(db.Model):
+
+#     __tablename__ = "favorite_courses"
+
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+#     user_id = db.Column(db.Integer, db.ForeignKey(
+#         'users.id', ondelete='cascade'))
+
+#     course_id = db.Column(db.Integer, unique=True, nullable=False)
+
+#     best_score = db.Column(db.Integer)
 
 
 class GroupRound(db.Model):
@@ -94,6 +128,8 @@ class GroupRound(db.Model):
     course_id = db.Column(db.Integer, nullable=False)
 
     date = db.Column(db.DateTime, nullable=False)
+
+    user_rounds = db.relationship('UserRound', backref="group_rounds")
 
 
 class UserRound(db.Model):
@@ -107,9 +143,9 @@ class UserRound(db.Model):
 
     course_id = db.Column(db.Integer, nullable=False)
 
-    date = db.Column(db.DateTime, nullable=False)
+    date = db.Column(db.Date, nullable=False)
 
-    score = db.Column(db.String(3))
+    score = db.Column(db.Integer)
 
     group_rd_id = db.Column(db.Integer, db.ForeignKey(
         'group_rounds.id', ondelete='cascade'))
