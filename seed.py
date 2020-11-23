@@ -45,33 +45,36 @@ new_user6.following.append(new_user5)
 
 db.session.commit()
 
-group_round = GroupRound(id=100, course_id=164, date=datetime(2019, 10, 2))
+group_round = GroupRound(id=100, course_id=164, date=datetime(
+    2019, 10, 2), course_name="Joralemon")
 
 db.session.add(group_round)
 db.session.commit()
 
 new_round1 = UserRound(user_id=100, course_id=6284,
-                       date=datetime(2019, 10, 16), score=68)
+                       date=datetime(2019, 10, 16), score=68, course_name="Stonykill")
 new_round2 = UserRound(user_id=100, course_id=164,
-                       date=datetime(2019, 11, 16), score=68)
+                       date=datetime(2019, 11, 16), score=68, course_name="Joralemon")
 new_round3 = UserRound(user_id=101, course_id=164,
-                       date=datetime(2019, 12, 16), score=68)
+                       date=datetime(2019, 12, 16), score=68, course_name="Joralemon")
 new_round4 = UserRound(user_id=102, course_id=6284,
-                       date=datetime(2019, 10, 1), score=68)
+                       date=datetime(2019, 10, 1), score=68, course_name="Stonykill")
 new_round5 = UserRound(user_id=103, course_id=6284,
-                       date=datetime(2019, 9, 16), score=68)
+                       date=datetime(2019, 9, 16), score=68, course_name="Stonykill")
 new_round6 = UserRound(user_id=104, course_id=6893,
-                       date=datetime(2019, 8, 16), score=68)
+                       date=datetime(2019, 8, 16), score=68,
+                       course_name="Colonial Acres")
 new_round7 = UserRound(user_id=105, course_id=6893,
-                       date=datetime(2019, 10, 16), score=68)
+                       date=datetime(2019, 10, 16), score=68,
+                       course_name="Colonial Acres")
 new_round8 = UserRound(user_id=103, course_id=6284,
-                       date=datetime(2019, 7, 16), score=68)
+                       date=datetime(2019, 7, 16), score=68, course_name="Stonykill")
 new_round9 = UserRound(user_id=103, course_id=164,
-                       date=datetime(2019, 10, 20), score=68)
+                       date=datetime(2019, 10, 20), score=68, course_name="Joralemon")
 new_round10 = UserRound(user_id=104, course_id=164,
-                        date=datetime(2019, 10, 2), score=69, group_rd_id=100)
+                        date=datetime(2019, 10, 2), score=69, group_rd_id=100, course_name="Joralemon")
 new_round11 = UserRound(user_id=105, course_id=164,
-                        date=datetime(2019, 10, 2), score=68, group_rd_id=100)
+                        date=datetime(2019, 10, 2), score=68, group_rd_id=100, course_name="Joralemon")
 
 
 db.session.add_all([new_round1, new_round2, new_round3, new_round4,
