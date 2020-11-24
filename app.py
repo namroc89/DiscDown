@@ -50,6 +50,9 @@ def get_course_by_id(course_id):
     returns a single JSON course response"""
     res = requests.get(f"{API_URL}", params={
                        'key': API_KEY, 'mode': 'crseinfo', 'id': course_id, 'sig': ID_SEARCH_SIG})
+    if not res:
+        return []
+
     return res.json()
 
 
@@ -57,6 +60,8 @@ def get_course_by_name(name):
     """search the API for courses by name. Returns list of JSON objects"""
     res = requests.get(f"{API_URL}", params={
                        'key': API_KEY, 'mode': 'findname', 'name': name, 'sig': NAME_SEARCH_SIG})
+    if not res:
+        return []
     return res.json()
 
 
@@ -65,6 +70,8 @@ def get_hole_info(course_id):
     res = requests.get(f"{API_URL}", params={
         'key': API_KEY, 'mode': "holeinfo", 'id': course_id, 'sig': HOLE_INFO_SIG
     })
+    if not res:
+        return []
     return res.json()
 
 
@@ -73,7 +80,8 @@ def get_course_photo(course_id):
     res = requests.get(f"{API_URL}", params={
         'key': API_KEY, 'mode': "crsephto", 'id': course_id, 'sig': PHOTO_SEARCH_SIG
     })
-
+    if not res:
+        return None
     return res.json()['course_photo_url_medium']
 
 
@@ -82,7 +90,8 @@ def search_by_zip(zip):
     res = requests.get(f"{API_URL}", params={
         'key': API_KEY, 'mode': "findzip", 'zip': zip, 'sig': ZIP_SEARCH_SIG
     })
-
+    if not res:
+        return []
     return res.json()
 
 
@@ -148,6 +157,71 @@ def register():
 def home_page():
     """landing page when the site is visited"""
     if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    rounds = UserRound.query.order_by(UserRound.date.desc()).all()
+
+    return render_template('userhome.html', rounds=rounds)
+
+#######################################
+# Course Routes #
+
+
+@app.route('/course_details/<int:id>')
+def show_course_details(id):
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    rounds = UserRound.query.filter(
+        UserRound.course_id == id).order_by(UserRound.date.desc()).all()
+    try:
+        course = get_course_by_id(id)
+
+    except:
+        flash("An error occured, try again", "danger")
+        return redirect('/')
+    return render_template('/course/course_rounds.html', course=course, rounds=rounds)
+
+
+###################################
+# Search Routes #
+
+
+@ app.route('/course_search_name')
+def search_course_by_name_results():
+    """Shows results of a search for courses by name."""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
         return redirect('/')
 
-    return render_template('userhome.html')
+    search = request.args['course-name-input']
+    courses = get_course_by_name(search)
+    return render_template('/search/course_search_results.html', courses=courses)
+
+
+@ app.route('/course_search_zip')
+def search_course_by_zip_results():
+    """Shows results of a search for courses by zipcode."""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+
+    search = request.args['course-zip']
+    courses = search_by_zip(search)
+    return render_template('/search/course_search_results.html', courses=courses)
+
+
+@ app.route('/user_search')
+def user_search_results():
+    """Shows results of a search for users by username."""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+
+    search = request.args['user-username-input']
+    users = User.query.filter(User.username.like(f"%{search}%")).all()
+    return render_template('/search/user_search_results.html', users=users)
+
+
+########################################################################
+# API calls from the front end #

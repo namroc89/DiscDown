@@ -1,6 +1,37 @@
 {% extends 'base.html'%}
 
-{% block title %}{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
+<div class="container">
+    <div>
+        <div class="form-group">
+            <form action="/course_search_name" id="course-search">
+                <label for="course-name-input">Search for Course by Name: </label>
+                <input type="search" class="form-control" name="course-name-input">
+                <button class="btn btn-success">Search</button>
+            </form>
+        </div>
+        <div class="form-group">
+            <form action="/course_search_zip" id="zip-search">
+                <label for="zip">Search for Courses by Zip: </label>
+                <input type="search" class="form-control" name="course-zip">
+                <button class="btn btn-success">Search</button>
+            </form>
+        </div>
+        <div class="form-group">
+            <form action="/user_search" id="user-username-search">
+                <label for="user-username-input">Search Users by Username: </label>
+                <input type="search" class="form-control" name="user-username-input">
+                <button class="btn btn-success">Search</button>
+            </form>
+        </div>
+
+    </div>
+    {% for round in rounds %}
+    <div>
+        <p>{{round.users.username}} | {{round.course_name}} | {{round.score}} | {{round.date}}</p>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

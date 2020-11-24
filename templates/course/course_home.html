@@ -1,10 +1,12 @@
 {% extends 'base.html'%}
 
-{% block title %}{% endblock %}
+{% block title %}{{course.name}}{% endblock %}
 
 {% block content %}
-
-
+<div class="container">
+    <img src="{{course.course_photo_url_medium}}" alt="">
+    <h1 class='display-2'>{{course.name}}</h1>
+</div>
 {% block course_info %}
 {% endblock %}
 {% endblock %}

@@ -1,4 +1,10 @@
 {% extends 'course/course_home.html'%}
 
 {% block course_info %}
+{% for round in rounds %}
+<div>
+    <p>{{round.users.username}} | {{round.score}}</p>
+</div>
+
+{% endfor %}
 {% endblock %}

@@ -1,4 +1,9 @@
 {% extends 'search/search_base.html' %}
 
 {% block results %}
+{% for course in courses %}
+<div>
+    <p><a href="/course_details/{{ course.course_id }}">{{course.name}} </a>{{course.zipcode}}</p>
+</div>
+{% endfor %}
 {% endblock %}
