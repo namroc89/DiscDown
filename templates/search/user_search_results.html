@@ -3,7 +3,8 @@
 {% block results %}
 {% for user in users%}
 <div>
-    <p>{{user.username}}|{{user.first_name}}|{{user.last_name}}</p>
+    <p><a href="/users/{{user.id}}">{{user.username}}</a> |{{user.first_name}}|{{user.last_name}}</p>
+
 </div>
 {% endfor %}
 {% endblock %}

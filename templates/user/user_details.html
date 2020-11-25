@@ -1,4 +1,33 @@
-{% extends 'user/user_home.html'%}
+{% extends 'user/user_base.html'%}
 
 {% block user_info %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm text-center">
+            <h4 class="display-5">Rounds</h4>
+            {% for round in user.user_rounds %}
+            <p><a href="/course_details/{{round.course_id}}">{{round.course_name}}</a></p>
+            <p>{{round.score}}</p>
+            <p>{{round.date}}</p>
+            {% endfor %}
+        </div>
+        <div class="col-sm text-center">
+            <h4 class="display-5">Following</h4>
+            {% for follows in user.following %}
+            <img src="{{follows.avatar}}" class="img-fluid w-50 h-50" alt="">
+            <p><a href="/users/{{follows.id}}">{{follows.username}}</a></p>
+            {% endfor %}
+        </div>
+        <div class="col-sm text-center">
+            <h4 class="display-5">Followers</h4>
+            {% for follower in user.followers %}
+            <img src="{{follower.avatar}}" class="img-fluid w-50 h-50" alt="">
+            <p><a href="/users/{{follower.id}}">{{follower.username}}</a></p>
+            {% endfor %}
+        </div>
+
+
+
+    </div>
+</div>
 {% endblock %}

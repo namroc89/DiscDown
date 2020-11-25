@@ -192,6 +192,29 @@ def show_course_details(id):
         return redirect('/')
     return render_template('/course/course_rounds.html', course=course, rounds=rounds)
 
+####################################
+# User Routes #
+
+
+@app.route('/users/<int:id>')
+def show_user_details(id):
+    """shows a users details to another logged in user. If page is logged in users details, can be edited."""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    user = User.query.get_or_404(id)
+    return render_template('/user/user_details.html', user=user)
+
+
+@app.route('/users/<int:id>/rounds')
+def show_user_rounds(id):
+    """Show user page with most recent rounds"""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    user = User.query.get_or_404(id)
+    return render_template('/user/user_rounds.html', user=user)
+
 
 ###################################
 # Search Routes #

@@ -1,0 +1,40 @@
+{% extends 'base.html'%}
+
+{% block title %}{{user.username}}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm text-center">
+            <h1 class="display-1">{{user.username}}</h1>
+            <img class="img-fluid w-50 h-50" src="{{user.avatar}}" alt="">
+            {% if user.id == g.user.id %}
+            <p>
+                <a class="btn btn-info" href="/users/{{user.id}}/edit">EDIT</a>
+            </p>
+            {% endif %}
+
+
+        </div>
+        <div class="col-sm text-left">
+            <p class="display-3">{{user.first_name}}</p>
+            <p class="display-3">{{user.last_name}}</p>
+            <p class="display-3">{{user.location}}</p>
+
+
+        </div>
+        <div class="col-sm text-center">
+            <p class="display-3">
+                {% if user.bio %}{{user.bio}}{%endif%}</p>
+            <p class="display-3">{% if user.fav_course %}{{user.fav_course}}{%endif%}</p>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+{% block user_info %}
+{% endblock %}
+{% endblock %}

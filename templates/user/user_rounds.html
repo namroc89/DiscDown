@@ -1,4 +1,7 @@
-{% extends 'user/user_home.html'%}
+{% extends 'user/user_base.html'%}
 
 {% block user_info %}
+{% for round in user.user_rounds %}
+<p>{{round.course_name}} | {{round.score}} | {{round.date}}</p>
+{% endfor %}
 {% endblock %}
