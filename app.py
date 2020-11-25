@@ -1,9 +1,10 @@
 from flask import Flask, request, render_template, redirect, flash, session, g
 from models import db, connect_db, GroupRound, User, UserRound, Follows
 import requests
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from flask_debugtoolbar import DebugToolbarExtension
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm, EditUser
+from psycopg2.errors import UniqueViolation
 from secret.secret import API_KEY, NAME_SEARCH_SIG, ZIP_SEARCH_SIG, LOC_SEARCH_SIG, ID_SEARCH_SIG, PHOTO_SEARCH_SIG, HOLE_INFO_SIG
 
 app = Flask(__name__)
@@ -143,7 +144,7 @@ def register():
             )
             db.session.commit()
 
-        except IntegrityError:
+        except:
             flash("Username or Email is already being used", "danger")
             return render_template("register.html", form=form)
 
@@ -216,11 +217,47 @@ def show_user_rounds(id):
     return render_template('/user/user_rounds.html', user=user)
 
 
+@app.route('/users/<int:id>/edit', methods=['GET', 'POST'])
+def edit_user(id):
+    """Shows edit user page and submits changes to the DB"""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    if g.user.id != id:
+        flash("Unautherized to edit user", 'danger')
+        return redirect('/')
+    user = g.user
+    form = EditUser(obj=user)
+    if form.validate_on_submit():
+        if User.authenticate(user.username, form.password.data):
+            try:
+                user.username = form.username.data
+                user.first_name = form.first_name.data
+                user.last_name = form.last_name.data
+                user.email = form.email.data
+                user.location = form.location.data
+                user.bio = form.bio.data
+                user.fav_course = form.fav_course.data
+                user.avatar = form.avatar.data
+                db.session.commit()
+
+            except (IntegrityError, InvalidRequestError, UniqueViolation):
+                db.session.rollback()
+                flash("Username or Email is already being used", "danger")
+                return render_template('user/edit_user.html', user=user, form=form)
+            flash("Profile edited successfully!", 'success')
+            return redirect(f"/users/{user.id}")
+        flash("Incorrect Password", 'danger')
+        return render_template('user/edit_user.html', user=user, form=form)
+    else:
+        return render_template('user/edit_user.html', user=user, form=form)
+
+
 ###################################
 # Search Routes #
 
 
-@ app.route('/course_search_name')
+@app.route('/course_search_name')
 def search_course_by_name_results():
     """Shows results of a search for courses by name."""
     if not g.user:
@@ -232,7 +269,7 @@ def search_course_by_name_results():
     return render_template('/search/course_search_results.html', courses=courses)
 
 
-@ app.route('/course_search_zip')
+@app.route('/course_search_zip')
 def search_course_by_zip_results():
     """Shows results of a search for courses by zipcode."""
     if not g.user:
@@ -244,7 +281,7 @@ def search_course_by_zip_results():
     return render_template('/search/course_search_results.html', courses=courses)
 
 
-@ app.route('/user_search')
+@app.route('/user_search')
 def user_search_results():
     """Shows results of a search for users by username."""
     if not g.user:

@@ -3,7 +3,7 @@
 {% block course_info %}
 {% for round in rounds %}
 <div>
-    <p>{{round.user.username}} | {{round.score}}</p>
+    <p><a href="/users/{{round.user.id}}">{{round.user.username}}</a> | {{round.score}} | {{round.date}}</p>
 </div>
 
 {% endfor %}
