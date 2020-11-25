@@ -39,7 +39,7 @@ def user_login(user):
     session[ACTIVE_USER] = user.id
 
 
-def user_logout(user):
+def user_logout():
     """Log out user"""
     if ACTIVE_USER in session:
         del session[ACTIVE_USER]
@@ -151,6 +151,16 @@ def register():
         return redirect('/home')
     else:
         return render_template("register.html", form=form)
+
+
+@app.route('/logout', methods=['POST'])
+def logout_user():
+    if not g.user:
+        flash("Log in before you can log out!", "warning")
+        return redirect('/')
+    user_logout()
+    flash("Log out was successful!", 'success')
+    return redirect('/')
 
 
 @app.route('/home')

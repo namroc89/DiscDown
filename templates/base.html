@@ -11,7 +11,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <a class="navbar-brand" href="#">Disc</a>
+        <a class="navbar-brand" href="/">Disc</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -20,9 +20,13 @@
             <div class="navbar-nav">
                 <a class="nav-link" href='/login' id='login-page'>Login</a>
                 <a class="nav-link" href="/register">Register</a>
-                <a class="nav-link" href="#">Pricing</a>
-                <a class="nav-link" href="#" tabindex="-1">Disabled</a>
             </div>
+        </div class='navbar-nav mr-auto'>
+        <form action="/logout" method="POST" class='form-inline'><button
+                class='btn btn-sm btn-info mr-auto'>Logout</button>
+        </form>
+
+        </div>
         </div>
     </nav>
     <div class="container">

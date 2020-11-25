@@ -48,7 +48,7 @@ class User(db.Model):
 
     avatar = db.Column(db.Text, default='/static/images/default_avatar.jpg')
 
-    user_rounds = db.relationship('UserRound', backref="users")
+    user_rounds = db.relationship('UserRound', backref="user")
 
     group_rounds = db.relationship(
         'GroupRound', secondary='user_rounds', backref="users")
