@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, RadioField
-from wtforms.validators import DataRequired, Email, Length, InputRequired, URL
+from wtforms.validators import DataRequired, Email, Length, InputRequired, URL, NumberRange
+from wtforms.fields.html5 import DateField, IntegerField
 
 
 class LoginForm(FlaskForm):
@@ -34,3 +35,10 @@ class EditUser(FlaskForm):
     bio = TextAreaField('Bio', validators=[Length(max=200)])
     fav_course = StringField('Favorite Course', validators=[Length(max=20)])
     avatar = StringField('Avatar Image')
+
+
+class NewRound(FlaskForm):
+    course_name = StringField('Course', validators=[DataRequired()])
+    date = DateField('Date', validators=[DataRequired()])
+    score = IntegerField('Score Total', validators=[NumberRange(max=200)])
+    notes = TextAreaField('Notes', validators=[Length(max=200)])

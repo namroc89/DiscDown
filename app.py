@@ -3,7 +3,7 @@ from models import db, connect_db, GroupRound, User, UserRound, Follows
 import requests
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from flask_debugtoolbar import DebugToolbarExtension
-from forms import LoginForm, RegisterForm, EditUser
+from forms import LoginForm, RegisterForm, EditUser, NewRound
 from psycopg2.errors import UniqueViolation
 from secret.secret import API_KEY, NAME_SEARCH_SIG, ZIP_SEARCH_SIG, LOC_SEARCH_SIG, ID_SEARCH_SIG, PHOTO_SEARCH_SIG, HOLE_INFO_SIG
 
@@ -253,6 +253,78 @@ def edit_user(id):
         return render_template('user/edit_user.html', user=user, form=form)
 
 
+@app.route('/users/<int:id>/new_round', methods=['GET', 'POST'])
+def add_new_round(id):
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    if g.user.id != id:
+        flash("Unautherized to add round for that user", 'danger')
+        return redirect('/')
+    form = NewRound()
+    user = g.user
+
+    if form.validate_on_submit():
+        course = get_course_by_name(form.course_name.data)
+        course = course[0]
+        if not course:
+            flash("No courses found with that name", "warning")
+            return render_template('user/new_round.html', form=form, user=user)
+        course_name = course["name"]
+        course_id = course["course_id"]
+        date = form.date.data
+        score = form.score.data
+        notes = form.notes.data
+        user_id = user.id
+
+        new_round = UserRound(user_id=user_id, course_id=course_id,
+                              course_name=course_name, date=date, score=score, notes=notes)
+        db.session.add(new_round)
+        try:
+            db.session.commit()
+        except:
+            flash('Something went wrong, try again', 'danger')
+            return render_template('user/new_round.html', form=form)
+        flash('Round added successfully', 'success')
+        return redirect(f'/users/{id}')
+    else:
+        return render_template('user/new_round.html', form=form, user=user)
+
+
+@app.route("/users/<int:id>/follow", methods=['POST'])
+def follow_user(id):
+    """Adding user to followed users"""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    if g.user.id == id:
+        flash("Following yourself is a little vain, don't you think?", "warning")
+        return redirect('/')
+
+    followed_user = User.query.get_or_404(id)
+    followed_user.followers.append(g.user)
+    db.session.commit()
+
+    return redirect(f"/users/{id}")
+
+
+@app.route("/users/<int:id>/unfollow", methods=['POST'])
+def unfollow_user(id):
+    """removes user form followed user"""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    if g.user.id == id:
+        flash("Can't unfollow yourself, unfortunately", "warning")
+        return redirect('/')
+
+    followed_user = User.query.get_or_404(id)
+    followed_user.followers.remove(g.user)
+    db.session.commit()
+
+    return redirect(f"/users/{id}")
+
+
 ###################################
 # Search Routes #
 
@@ -291,6 +363,8 @@ def user_search_results():
     search = request.args['user-username-input']
     users = User.query.filter(User.username.like(f"%{search}%")).all()
     return render_template('/search/user_search_results.html', users=users)
+
+########################################################
 
 
 ########################################################################

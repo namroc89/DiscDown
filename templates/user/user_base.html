@@ -11,9 +11,23 @@
             {% if user.id == g.user.id %}
             <p>
                 <a class="btn btn-info" href="/users/{{user.id}}/edit">EDIT</a>
+                <a class='btn btn-success' href="/users/{{user.id}}/new_round">Add Round</a>
             </p>
             {% endif %}
-
+            {% if user.id != g.user.id and user not in g.user.following %}
+            <p>
+                <form action="/users/{{user.id}}/follow" method="POST">
+                    <button class="btn btn-primary">Follow</button>
+                </form>
+            </p>
+            {% endif %}
+            {% if user in g.user.following %}
+            <p>
+                <form action="/users/{{user.id}}/unfollow" method="POST">
+                    <button class="btn btn-primary">Unfollow</button>
+                </form>
+            </p>
+            {% endif %}
 
         </div>
         <div class="col-sm text-left">

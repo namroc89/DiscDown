@@ -1,6 +1,12 @@
 {% extends 'base.html'%}
 
-{% block title %}{% endblock %}
+{% block title %}Welcome!{% endblock %}
 
 {% block content %}
+<div class="container text-center">
+    <h1 class="display-3">Please Log In or Register</h1>
+    <a href="/login" class="btn btn-primary">Log in</a>
+    <a href="/register" class="btn btn-success">Register</a>
+
+</div>
 {% endblock %}
