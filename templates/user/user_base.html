@@ -10,7 +10,7 @@
             <img class="img-fluid w-50 h-50" src="{{user.avatar}}" alt="">
             {% if user.id == g.user.id %}
             <p>
-                <a class="btn btn-info" href="/users/{{user.id}}/edit">EDIT</a>
+                <a class="btn btn-info" href="/users/{{user.id}}/edit">Edit</a>
                 <a class='btn btn-success' href="/users/{{user.id}}/new_round">Add Round</a>
             </p>
             {% endif %}
@@ -48,7 +48,8 @@
         </div>
     </div>
 </div>
-
-{% block user_info %}
-{% endblock %}
+<div class="container">
+    {% block user_info %}
+    {% endblock %}
+</div>
 {% endblock %}

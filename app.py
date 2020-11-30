@@ -204,7 +204,11 @@ def show_user_details(id):
         flash("Please Log in or Register!", "danger")
         return redirect('/')
     user = User.query.get_or_404(id)
-    return render_template('/user/user_details.html', user=user)
+    following = [f.id for f in user.following] + [user.id]
+    following_rounds = (UserRound.query.filter(UserRound.user_id.in_(following))
+                        .order_by(UserRound.date.desc())
+                        .all())
+    return render_template('/user/user_details.html', user=user, following_rounds=following_rounds)
 
 
 @app.route('/users/<int:id>/rounds')
@@ -215,6 +219,26 @@ def show_user_rounds(id):
         return redirect('/')
     user = User.query.get_or_404(id)
     return render_template('/user/user_rounds.html', user=user)
+
+
+@app.route('/users/<int:id>/following')
+def show_user_follows(id):
+    """Show user page with all followed users"""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    user = User.query.get_or_404(id)
+    return render_template('/user/following.html', user=user)
+
+
+@app.route('/users/<int:id>/followers')
+def show_user_followers(id):
+    """Show user page with all followers"""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    user = User.query.get_or_404(id)
+    return render_template('/user/followers.html', user=user)
 
 
 @app.route('/users/<int:id>/edit', methods=['GET', 'POST'])

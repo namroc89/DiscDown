@@ -19,12 +19,20 @@
             {% endfor %}
         </div>
         <div class="col-sm text-center">
+            <h4 class="display-5">Following Rounds</h4>
+            {% for round in following_rounds %}
+            <p><a href="/users/{{round.user.id}}">{{round.user.username}}</a> | {{round.course_name}} | {{round.score}}
+                | {{round.date}}</p>
+            {% endfor %}
+        </div>
+        <div class="col-sm text-center">
             <h4 class="display-5">Followers</h4>
             {% for follower in user.followers %}
             <img src="{{follower.avatar}}" class="img-fluid w-50 h-50" alt="">
             <p><a href="/users/{{follower.id}}">{{follower.username}}</a></p>
             {% endfor %}
         </div>
+
 
 
 
