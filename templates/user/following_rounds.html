@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 
 {% block content %}
-{% for round in user.user_rounds %}
+{% for round in following_rounds %}
 <p><a href="/course_details/{{round.course_id}}">{{round.course_name}}</a> | {{round.score}} | {{round.date}}</p>
 {% endfor %}
 {% endblock %}

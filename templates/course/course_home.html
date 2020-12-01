@@ -6,7 +6,23 @@
 <div class="container">
     <img src="{{course.course_photo_url_medium}}" alt="">
     <h1 class='display-2'>{{course.name}}</h1>
+    <a href="/course_details/{{course.course_id}}/new_round" class="btn btn-primary">Add Round</a>
 </div>
-{% block course_info %}
-{% endblock %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {% for round in rounds %}
+
+            <p><a href="/users/{{round.user.id}}">{{round.user.username}}</a> | {{round.score}} | {{round.date}}</p>
+
+            {% endfor %}
+        </div>
+        <div class='col'>
+            {% for hole in holes[1:] %}
+            <p>Hole: {{hole.hole_num}} || Length: {{hole.tee_1_len}} || Par: {{hole.tee_1_par}}</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
 {% endblock %}

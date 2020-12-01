@@ -30,8 +30,9 @@
     </div>
     {% for round in rounds %}
     <div>
-        <p><a href="/users/{{round.user.id}}">{{round.user.username}}</a> | {{round.course_name}} | {{round.score}} |
-            {{round.date}}</p>
+        <p><a class="text-success" href="/users/{{round.user.id}}">{{round.user.username}}</a> | <a
+                href="/course_details/{{round.course_id}}">{{round.course_name}}</a> | {{round.score}} |
+            {{round.date}}</p><a class="btn btn-info" href="/round_info/{{round.id}}">Round Info</a>
     </div>
     {% endfor %}
 </div>

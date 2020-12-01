@@ -38,7 +38,6 @@ class EditUser(FlaskForm):
 
 
 class NewRound(FlaskForm):
-    course_name = StringField('Course', validators=[DataRequired()])
     date = DateField('Date', validators=[DataRequired()])
     score = IntegerField('Score Total', validators=[NumberRange(max=200)])
     notes = TextAreaField('Notes', validators=[Length(max=200)])

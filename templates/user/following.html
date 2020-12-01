@@ -1,6 +1,6 @@
-{% extends 'user/user_base.html'%}
+{% extends 'base.html'%}
 
-{% block user_info %}
+{% block content %}
 {% for following in user.following %}
 <img src="{{following.avatar}}" class="img-fluid w-50 h-50" alt="">
 <p><a href="/users/{{following.id}}">{{following.username}}</a></p>

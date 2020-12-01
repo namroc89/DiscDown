@@ -5,13 +5,12 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-sm text-center">
-            <h1 class="display-1">{{user.username}}</h1>
+        <div class="col-sm-4 text-center">
+            <h1 class="display-4">{{user.username}}</h1>
             <img class="img-fluid w-50 h-50" src="{{user.avatar}}" alt="">
             {% if user.id == g.user.id %}
             <p>
                 <a class="btn btn-info" href="/users/{{user.id}}/edit">Edit</a>
-                <a class='btn btn-success' href="/users/{{user.id}}/new_round">Add Round</a>
             </p>
             {% endif %}
             {% if user.id != g.user.id and user not in g.user.following %}
@@ -30,21 +29,18 @@
             {% endif %}
 
         </div>
-        <div class="col-sm text-left">
+        <div class="col-sm-4 text-center">
             <p class="display-3">{{user.first_name}}</p>
             <p class="display-3">{{user.last_name}}</p>
             <p class="display-3">{{user.location}}</p>
 
 
         </div>
-        <div class="col-sm text-center">
-            <p class="display-3">
+        <div class="col-sm-4 text-center">
+            <p class="display-6">
                 {% if user.bio %}{{user.bio}}{%endif%}</p>
-            <p class="display-3">{% if user.fav_course %}{{user.fav_course}}{%endif%}</p>
-
-
-
-
+            <p>{% if user.fav_course %} <a
+                    href="/fav_course_search_name/{{user.fav_course}}">{{user.fav_course}}</a>{%endif%}</p>
         </div>
     </div>
 </div>

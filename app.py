@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash, session, g
+from flask import Flask, request, render_template, redirect, flash, session, g, jsonify
 from models import db, connect_db, GroupRound, User, UserRound, Follows
 import requests
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
@@ -180,6 +180,7 @@ def home_page():
 
 @app.route('/course_details/<int:id>')
 def show_course_details(id):
+    """Shows details of chosen course"""
     if not g.user:
         flash("Please Log in or Register!", "danger")
         return redirect('/')
@@ -187,16 +188,26 @@ def show_course_details(id):
         UserRound.course_id == id).order_by(UserRound.date.desc()).all()
     try:
         course = get_course_by_id(id)
-
+        holes = get_hole_info(id)
     except:
         flash("An error occured, try again", "danger")
         return redirect('/')
-    return render_template('/course/course_rounds.html', course=course, rounds=rounds)
+    return render_template('/course/course_home.html', course=course, rounds=rounds, holes=holes)
+
+
+# @app.route('/course_details/<int:id>/holes')
+# def show_hole_info(id):
+#     if not g.user:
+#         flash("Please Log in or Register!", "danger")
+#         return redirect('/')
+#     course = get_course_by_id(id)
+#     holes = get_hole_info(id)
+
+#     return render_template('course/tee_info.html', holes=holes, course=course)
+
 
 ####################################
 # User Routes #
-
-
 @app.route('/users/<int:id>')
 def show_user_details(id):
     """shows a users details to another logged in user. If page is logged in users details, can be edited."""
@@ -204,7 +215,7 @@ def show_user_details(id):
         flash("Please Log in or Register!", "danger")
         return redirect('/')
     user = User.query.get_or_404(id)
-    following = [f.id for f in user.following] + [user.id]
+    following = [f.id for f in user.following]
     following_rounds = (UserRound.query.filter(UserRound.user_id.in_(following))
                         .order_by(UserRound.date.desc())
                         .all())
@@ -241,6 +252,19 @@ def show_user_followers(id):
     return render_template('/user/followers.html', user=user)
 
 
+@app.route('/users/<int:id>/following_rounds')
+def show_following_rounds(id):
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    user = User.query.get_or_404(id)
+    following = [f.id for f in user.following]
+    following_rounds = (UserRound.query.filter(UserRound.user_id.in_(following))
+                        .order_by(UserRound.date.desc())
+                        .all())
+    return render_template('user/following_rounds.html', user=user, following_rounds=following_rounds)
+
+
 @app.route('/users/<int:id>/edit', methods=['GET', 'POST'])
 def edit_user(id):
     """Shows edit user page and submits changes to the DB"""
@@ -261,8 +285,12 @@ def edit_user(id):
                 user.email = form.email.data
                 user.location = form.location.data
                 user.bio = form.bio.data
-                user.fav_course = form.fav_course.data
                 user.avatar = form.avatar.data
+                user.fav_course = form.fav_course.data
+                if user.fav_course:
+                    course = get_course_by_name(user.fav_course)
+                    if course:
+                        user.fav_course = course[0]["name"]
                 db.session.commit()
 
             except (IntegrityError, InvalidRequestError, UniqueViolation):
@@ -277,42 +305,50 @@ def edit_user(id):
         return render_template('user/edit_user.html', user=user, form=form)
 
 
-@app.route('/users/<int:id>/new_round', methods=['GET', 'POST'])
-def add_new_round(id):
+@app.route('/users/<int:id>/delete', methods=['POST'])
+def delete_user(id):
+    """Remove user"""
     if not g.user:
         flash("Please Log in or Register!", "danger")
         return redirect('/')
-    if g.user.id != id:
-        flash("Unautherized to add round for that user", 'danger')
+    user = User.query.get_or_404(id)
+    if user.id != g.user.id:
+        flash("Can not delete another user", "danger")
+        return redirect('/')
+    db.session.delete(user)
+    db.session.commit()
+    flash('User successfully removed', "success")
+    return redirect('/')
+
+
+@app.route('/course_details/<int:id>/new_round', methods=['GET', 'POST'])
+def add_new_round(id):
+    """Adding a new round"""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
         return redirect('/')
     form = NewRound()
     user = g.user
 
+    course = get_course_by_id(id)
     if form.validate_on_submit():
-        course = get_course_by_name(form.course_name.data)
-        course = course[0]
-        if not course:
-            flash("No courses found with that name", "warning")
-            return render_template('user/new_round.html', form=form, user=user)
-        course_name = course["name"]
-        course_id = course["course_id"]
         date = form.date.data
         score = form.score.data
         notes = form.notes.data
         user_id = user.id
 
-        new_round = UserRound(user_id=user_id, course_id=course_id,
-                              course_name=course_name, date=date, score=score, notes=notes)
+        new_round = UserRound(user_id=user.id, course_id=course['course_id'],
+                              course_name=course['name'], date=date, score=score, notes=notes)
         db.session.add(new_round)
         try:
             db.session.commit()
         except:
             flash('Something went wrong, try again', 'danger')
-            return render_template('user/new_round.html', form=form)
+            return render_template('course/new_round.html', form=form)
         flash('Round added successfully', 'success')
-        return redirect(f'/users/{id}')
+        return redirect(f'/course_details/{id}')
     else:
-        return render_template('user/new_round.html', form=form, user=user)
+        return render_template('course/new_round.html', form=form, user=user, course=course)
 
 
 @app.route("/users/<int:id>/follow", methods=['POST'])
@@ -349,9 +385,18 @@ def unfollow_user(id):
     return redirect(f"/users/{id}")
 
 
+@app.route("/round_info/<int:id>")
+def show_round_info(id):
+    """Shows details from a specified round"""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    d_round = UserRound.query.get_or_404(id)
+    return render_template('round_info.html', round=d_round)
+
+
 ###################################
 # Search Routes #
-
 
 @app.route('/course_search_name')
 def search_course_by_name_results():
@@ -362,6 +407,17 @@ def search_course_by_name_results():
 
     search = request.args['course-name-input']
     courses = get_course_by_name(search)
+    return render_template('/search/course_search_results.html', courses=courses)
+
+
+@app.route('/fav_course_search_name/<fav>')
+def search_fav_course_by_name_results(fav):
+    """Shows results of a search for courses by from fav link"""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+
+    courses = get_course_by_name(fav)
     return render_template('/search/course_search_results.html', courses=courses)
 
 
@@ -388,8 +444,19 @@ def user_search_results():
     users = User.query.filter(User.username.like(f"%{search}%")).all()
     return render_template('/search/user_search_results.html', users=users)
 
-########################################################
-
 
 ########################################################################
 # API calls from the front end #
+
+@app.route('/delete_round/<int:id>', methods=['DELETE'])
+def delete_round(id):
+    """Deletes and removes round"""
+    if not g.user:
+        flash("Please Log in or Register!", "danger")
+        return redirect('/')
+    dround = UserRound.query.get_or_404(id)
+    if dround.user_id != g.user.id:
+        flash("Cannot delete other users rounds", "danger")
+    db.session.delete(dround)
+    db.session.commit()
+    return jsonify()

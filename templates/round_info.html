@@ -1,6 +1,14 @@
 {% extends 'base.html'%}
 
-{% block title %}{% endblock %}
+{% block title %}Round Info{% endblock %}
 
 {% block content %}
+<div class="contain">
+    <div class="text-center">
+        <p><a href="/users/{{round.user.id}}">{{round.user.username}}</a> || <a
+                href="/course_details/{{round.course_id}}">{{round.course_name}}</a> || {{round.score}} ||
+            {{round.date}} ||
+            {{round.notes}}</p>
+    </div>
+</div>
 {% endblock %}
