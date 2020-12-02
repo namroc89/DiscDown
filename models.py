@@ -28,7 +28,8 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True,
+                   autoincrement=True)
 
     username = db.Column(db.String(15), unique=True, nullable=False)
 
@@ -48,7 +49,8 @@ class User(db.Model):
 
     avatar = db.Column(db.Text, default='/static/images/default_avatar.jpg')
 
-    user_rounds = db.relationship('UserRound', backref="user")
+    user_rounds = db.relationship(
+        'UserRound', backref="user", cascade="all")
 
     group_rounds = db.relationship(
         'GroupRound', secondary='user_rounds', backref="users")
@@ -141,7 +143,7 @@ class UserRound(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey(
-        'users.id', ondelete='cascade'))
+        'users.id', ondelete='CASCADE'), nullable=False)
 
     course_id = db.Column(db.Integer, nullable=False)
 
@@ -152,6 +154,6 @@ class UserRound(db.Model):
     score = db.Column(db.Integer)
 
     group_rd_id = db.Column(db.Integer, db.ForeignKey(
-        'group_rounds.id', ondelete='cascade'))
+        'group_rounds.id', ondelete='CASCADE'))
 
     notes = db.Column(db.String(200))

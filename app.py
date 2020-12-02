@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, render_template, redirect, flash, session, g, jsonify
 from models import db, connect_db, GroupRound, User, UserRound, Follows
 import requests
@@ -13,7 +15,8 @@ ACTIVE_USER = "active_user_id"
 
 API_URL = "https://www.dgcoursereview.com/api_test/"
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///discgolf'
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    os.environ.get('DATABASE_URL', 'postgresql:///discgolf'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = "hellomybaby12345"
