@@ -4,9 +4,15 @@
 
 {% block content %}
 <div class="container text-center">
-    <h1 class="display-3">Please Log In or Register</h1>
-    <a href="/login" class="btn btn-primary">Log in</a>
-    <a href="/register" class="btn btn-success">Register</a>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col card w-50" id="log-or-reg">
+            <h1 class="display-5">Log In or Register</h1>
+            <p><a href="/login" class="btn m-2" id="login-btn">Log in</a>
+                <a href="/register" class="btn m-2" id="register-btn">Register</a></p>
+        </div>
+        <div class="col-4"></div>
 
+    </div>
 </div>
 {% endblock %}

@@ -1,0 +1,39 @@
+body {
+  background: url(https://cdn.buttercms.com/BjNMLjkRXyI9WHNQsTMr);
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.nav-link {
+  color: rgb(215, 194, 176);
+}
+
+.navbar-brand {
+  color: rgb(215, 194, 176);
+}
+#log-or-reg {
+  background-color: rgba(2, 23, 6, 0.75);
+  border-radius: 30px;
+}
+
+#nav {
+  background-color: rgba(2, 23, 6, 0.75);
+  color: rgb(215, 194, 176);
+}
+
+h1 {
+  color: rgb(215, 194, 176);
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+#login-btn {
+  background-color: rgba(9, 53, 13, 0.618);
+  color: rgb(215, 194, 176);
+  border-color: black;
+}
+#register-btn {
+  background-color: rgba(9, 53, 13, 0.618);
+  color: rgb(215, 194, 176);
+  border-color: black;
+}

@@ -230,3 +230,6 @@ class UserRoundTestCase(TestCase):
         db.session.commit()
 
         self.assertFalse(UserRound.query.get(1001))
+
+    def test_invalid_inputs(self):
+        """tests response if input is valid"""
