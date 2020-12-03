@@ -1,10 +1,30 @@
 {% extends 'search/search_base.html' %}
 
 {% block results %}
-{% for user in users%}
-<div>
-    <p><a href="/users/{{user.id}}">{{user.username}}</a> |{{user.first_name}}|{{user.last_name}}</p>
+<div class="row justify-content-center card-row">
+
+    {% for user in users %}
+    <div class="col-sm-3 card m-4 text-center user-card">
+
+        <img class="card-img-top pt-2" src="{{user.avatar}}" alt="">
+        <div class="card-header text-center">
+            <a href="/users/{{user.id}}">
+                <h4 class="display-6">{{user.username}}</h4>
+            </a>
+        </div>
+        <ul class="list-group list-group-flush text-center">
+            <li class="list-group-item">{{user.first_name}} {{user.last_name}}
+            </li>
+
+            <li class="list-group-item">{{user.location}}</li>
+
+
+        </ul>
+
+    </div>
+    {% endfor %}
+
+
 
 </div>
-{% endfor %}
 {% endblock %}

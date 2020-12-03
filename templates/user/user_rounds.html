@@ -1,7 +1,43 @@
-{% extends 'base.html'%}
+{% extends 'user/user_base.html' %}
 
-{% block content %}
-{% for round in user.user_rounds %}
-<p><a href="/course_details/{{round.course_id}}">{{round.course_name}}</a> | {{round.score}} | {{round.date}}</p>
-{% endfor %}
+{% block user_info %}
+<div class="row justify-content-center mt-4 headers">
+    <h4>{{user.username}}'s Rounds</h4>
+</div>
+<div class="row justify-content-center">
+
+    {% for round in user.user_rounds %}
+    <div class="col-3 card m-4 user-card">
+
+        <div class="card-header text-center">
+            <a href="/course_details/{{round.course_id}}">
+                <h4 class="display-6">{{round.course_name}}</h4>
+            </a>
+        </div>
+        <ul class="list-group list-group-flush text-center">
+            <li class="list-group-item">User: <a class="text-success"
+                    href="/users/{{round.user.id}}">{{round.user.username}}</a>
+            </li>
+
+            <li class="list-group-item">Score: {{round.score}}</li>
+            <li class="list-group-item pb-2"> {{round.date.strftime('%b, %d, %Y')}}</li>
+            <div class="row pb-3 pt-2">
+
+                <div class="col-6 text-center">
+                    <a class="btn round-info" href="/round_info/{{round.id}}">Info</a>
+                </div>
+
+
+
+                {% if g.user.id == round.user.id %}
+                <div class="col-6">
+                    <button class="btn delete-round" data-id="{{round.id}}">Delete</button>
+                </div>
+                {% endif %}
+            </div>
+        </ul>
+    </div>
+    {% endfor %}
+
+</div>
 {% endblock %}

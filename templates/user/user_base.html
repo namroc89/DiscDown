@@ -4,47 +4,50 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-sm-4 text-center">
+
+    <div class="row justify-content-center user-head">
+        <div class="col-sm-3 text-center">
+            <img class="img-fluid w-20px h-20px" src="{{user.avatar}}" alt="">
             <h1 class="display-4">{{user.username}}</h1>
-            <img class="img-fluid w-50 h-50" src="{{user.avatar}}" alt="">
             {% if user.id == g.user.id %}
             <p>
-                <a class="btn btn-info" href="/users/{{user.id}}/edit">Edit</a>
+                <a class="btn edit-btn" href="/users/{{user.id}}/edit">Edit</a>
             </p>
             {% endif %}
             {% if user.id != g.user.id and user not in g.user.following %}
             <p>
                 <form action="/users/{{user.id}}/follow" method="POST">
-                    <button class="btn btn-primary">Follow</button>
+                    <button class="btn follow-btn">Follow</button>
                 </form>
             </p>
             {% endif %}
             {% if user in g.user.following %}
             <p>
                 <form action="/users/{{user.id}}/unfollow" method="POST">
-                    <button class="btn btn-primary">Unfollow</button>
+                    <button class="btn follow-btn">Unfollow</button>
                 </form>
             </p>
             {% endif %}
 
         </div>
-        <div class="col-sm-4 text-center">
-            <p class="display-3">{{user.first_name}}</p>
-            <p class="display-3">{{user.last_name}}</p>
-            <p class="display-3">{{user.location}}</p>
+        <div class="col-sm-6 text-center">
+            <p class="display-4">{{user.first_name}}</p>
+            <p class="display-4">{{user.last_name}}</p>
+            <h4>{% if user.fav_course %} <a
+                    href="/fav_course_search_name/{{user.fav_course}}">{{user.fav_course}}</a>{%endif%}</h4>
+
 
 
         </div>
-        <div class="col-sm-4 text-center">
+        <div class="col-sm-3 text-center">
             <p class="display-6">
                 {% if user.bio %}{{user.bio}}{%endif%}</p>
-            <p>{% if user.fav_course %} <a
-                    href="/fav_course_search_name/{{user.fav_course}}">{{user.fav_course}}</a>{%endif%}</p>
+            <p>{{user.location}}</p>
+
         </div>
     </div>
-</div>
-<div class="container">
+
+
     {% block user_info %}
     {% endblock %}
 </div>

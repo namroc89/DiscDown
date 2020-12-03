@@ -1,9 +1,34 @@
 {% extends 'search/search_base.html' %}
 
 {% block results %}
-{% for course in courses %}
-<div>
-    <p><a href="/course_details/{{ course.course_id }}">{{course.name}} </a>{{course.zipcode}}</p>
+
+
+
+<div class="row">
+
+    {% for course in courses %}
+    <div class="col-sm-4 text-center">
+        <div class="card m-4 search-results-card">
+
+            <div class="card-header text-center">
+                <a href="/course_details/{{course.course_id}}">
+                    <h4 class="display-6">{{course.name}}</h4>
+                </a>
+            </div>
+            <ul class="list-group list-group-flush text-center">
+                <li class="list-group-item">{{course.city}}, {{course.state}}
+                </li>
+
+                <li class="list-group-item">Holes: {{course.holes}}</li>
+                <li class="list-group-item pb-2">Rating: {{course.rating}}</li>
+
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+
+
+
 </div>
-{% endfor %}
+
 {% endblock %}

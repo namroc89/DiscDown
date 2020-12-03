@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="row " id="search-group">
+<div class="row search-group">
 
     <div class="form-group col-4">
 
@@ -38,9 +38,9 @@
 <div class="container">
     <div class="row justify-content-center card-row">
         {% for round in rounds %}
-        <div class="col-sm-6 col-md-2 card m-4 user-card">
+        <div class="col-sm-6 col-md-3 card m-4 user-card">
             <img class="card-img-top pt-2" src="{{round.user.avatar}}" alt="">
-            <div class="card-header">
+            <div class="card-header text-center">
                 <a href="/course_details/{{round.course_id}}">
                     <h4 class="display-6">{{round.course_name}}</h4>
                 </a>
@@ -50,15 +50,22 @@
                         href="/users/{{round.user.id}}">{{round.user.username}}</a>
                 </li>
 
-                <li class="list-group-item">{{round.score}}</li>
-                <li class="list-group-item"> {{round.date}}</li>
-                <a class="btn round-info" href="/round_info/{{round.id}}">Info</a>
+                <li class="list-group-item">Score: {{round.score}}</li>
+                <li class="list-group-item pb-2"> {{round.date.strftime('%b, %d, %Y')}}</li>
+                <div class="row pb-3 pt-2">
+
+                    <div class="col-6 text-center">
+                        <a class="btn round-info" href="/round_info/{{round.id}}">Info</a>
+                    </div>
 
 
 
-                {% if g.user.id == round.user.id %}
-                <button class="btn delete-round" data-id="{{round.id}}">Delete</button>
-                {% endif %}
+                    {% if g.user.id == round.user.id %}
+                    <div class="col-6">
+                        <button class="btn delete-round" data-id="{{round.id}}">Delete</button>
+                    </div>
+                    {% endif %}
+                </div>
             </ul>
         </div>
         {% endfor %}

@@ -4,25 +4,86 @@
 
 {% block content %}
 <div class="container">
-    <img src="{{course.course_photo_url_medium}}" alt="">
-    <h1 class='display-2'>{{course.name}}</h1>
-    <a href="/course_details/{{course.course_id}}/new_round" class="btn btn-primary">Add Round</a>
+    <div class="row justify-content-center course-head mb-3 pb-3">
+        <div class="col-8">
+            <h1 class='display-2'>{{course.name}}</h1>
+            <h4>{{course.city}}, {{course.state}}</h4>
+        </div>
+        <div class="col-4">
+            <img src="{{course.course_photo_url_medium}}" alt="">
+        </div>
+    </div>
 </div>
 <div class="container">
-    <div class="row">
-        <div class="col">
-            {% for round in rounds %}
-
-            <p><a href="/users/{{round.user.id}}">{{round.user.username}}</a> | {{round.score}} | {{round.date}}</p>
-
-            {% endfor %}
+    <div class="row justify-content-center headers">
+        <div class="col-8 text-center">
+            <h2 class="display-6">Recent Rounds | <a href="/course_details/{{course.course_id}}/new_round"
+                    class="btn add-round">Add Round</a></h2>
         </div>
-        <div class='col'>
-            {% for hole in holes[1:] %}
-            <p>Hole: {{hole.hole_num}} || Length: {{hole.tee_1_len}} || Par: {{hole.tee_1_par}}</p>
-            {% endfor %}
+        <div class="col-4 text-center">
+            <h2 class="display-6">Hole Information</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-8 text-center">
+
+            <div class="container">
+                <div class="row justify-content-center card-row">
+                    {% for round in rounds %}
+                    <div class="col-sm-6 col-md-3 card m-4 user-card">
+                        <img class="card-img-top pt-2" src="{{round.user.avatar}}" alt="">
+                        <div class="card-header text-center p-2">
+                            <a href="/course_details/{{round.course_id}}">
+                                <h4 class="display-6">{{round.course_name}}</h4>
+                            </a>
+                        </div>
+                        <ul class="list-group list-group-flush text-center">
+                            <li class="list-group-item">User: <a class="text-success"
+                                    href="/users/{{round.user.id}}">{{round.user.username}}</a>
+                            </li>
+
+                            <li class="list-group-item">Score: {{round.score}}</li>
+                            <li class="list-group-item pb-2"> {{round.date.strftime('%b, %d, %Y')}}</li>
+                            <div class="row pb-3 pt-2">
+
+                                <div class="col-6 text-center">
+                                    <a class="btn round-info" href="/round_info/{{round.id}}">Info</a>
+                                </div>
+
+
+
+                                {% if g.user.id == round.user.id %}
+                                <div class="col-6">
+                                    <button class="btn delete-round" data-id="{{round.id}}">Delete</button>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </ul>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm text-center">
+
+            <div class="row card-row justify-content-center mt-4">
+                {% for hole in holes[1:] %}
+                <div class="card border-black col-6 user-card">
+                    <div class="card-header">
+                        <h2>Hole:{{hole.hole_num}}</h2>
+                    </div>
+                    <ul class="list-group list-group-flush text-center">
+                        <li class="list-group-item">Length:{{hole.tee_1_len}}</li>
+                        <li class="list-group-item">Par: {{hole.tee_1_par}}</li>
+
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>
 
 {% endblock %}
+
+<!-- <p>Hole: {{hole.hole_num}} || Length: {{hole.tee_1_len}} || Par: {{hole.tee_1_par}}</p> -->

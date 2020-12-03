@@ -27,7 +27,7 @@ class EditUser(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
     username = StringField('Username', validators=[
-                           DataRequired(), Length(min=6)])
+                           DataRequired(), Length(min=6, max=11)])
     email = StringField('Email', validators=[Email(), DataRequired()])
     password = PasswordField('Password', validators=[
                              DataRequired(), Length(min=6)])

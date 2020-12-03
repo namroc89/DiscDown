@@ -68,7 +68,7 @@ label {
   border-radius: 30px;
 }
 
-#search-group {
+.search-group {
   background-color: rgba(2, 23, 6, 0.75);
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
@@ -101,10 +101,59 @@ li {
   color: rgb(215, 194, 176);
 }
 
-.user-card {
+.user-head {
+  background-color: rgba(2, 23, 6, 0.75);
+  border-radius: 0 0 30px 30px;
 }
-.card-row {
+.course-head {
+  background-color: rgba(2, 23, 6, 0.75);
+  border-radius: 0 0 30px 30px;
 }
 
-.card-img {
+.cat-title {
+  background-color: rgba(2, 23, 6, 0.75);
+  border-radius: 0 0 30px 30px;
+}
+
+.follow-btn {
+  background-color: rgba(9, 53, 13, 0.618);
+  color: rgb(215, 194, 176);
+}
+.edit-btn {
+  background-color: rgba(9, 53, 13, 0.618);
+  color: rgb(215, 194, 176);
+}
+
+.search-results-card {
+  background-color: rgba(2, 23, 6, 0.75);
+  border-radius: 30px;
+}
+
+.edit-form {
+  background-color: rgba(2, 23, 6, 0.75);
+  border-radius: 30px;
+}
+
+h2 {
+  color: rgb(215, 194, 176);
+}
+
+.hole-card {
+  background-color: rgba(2, 23, 6, 0.75);
+  border-radius: 30px;
+}
+
+.headers {
+  padding-top: 8px;
+  background-color: rgba(2, 23, 6, 0.75);
+  border-radius: 30px;
+}
+
+.add-round {
+  background-color: rgba(9, 53, 13, 0.618);
+  color: rgb(215, 194, 176);
+  border: 1px solid black;
+}
+h4 {
+  color: rgba(33, 91, 198, 0.886);
 }

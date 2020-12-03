@@ -4,28 +4,36 @@
 
 
 {% block content %}
-<div class="container">
-    <div class="form-group">
-        <form action="/course_search_name" class="course-search-name">
+<div class="row search-group">
+
+    <div class="form-group col-4">
+
+        <form action="/course_search_name" id="course-search">
             <label for="course-name-input">Search for Course by Name: </label>
             <input type="search" class="form-control" name="course-name-input">
-            <button class="btn btn-success">Search</button>
+            <button class="btn mt-2 form-control search-button">Search</button>
         </form>
+
     </div>
-    <div class="form-group">
-        <form action="/course_search_zip" class="zip-search">
+
+    <div class="form-group col-4">
+        <form action="/course_search_zip" id="zip-search">
             <label for="zip">Search for Courses by Zip: </label>
             <input type="search" class="form-control" name="course-zip">
-            <button class="btn btn-success">Search</button>
+            <button class="btn mt-2 form-control search-button">Search</button>
         </form>
     </div>
-    <div class="form-group">
-        <form action="/user_search" class="user-username-search">
+
+    <div class="form-group col-4">
+
+        <form action="/user_search" id="user-username-search">
             <label for="user-username-input">Search Users by Username: </label>
             <input type="search" class="form-control" name="user-username-input">
-            <button class="btn btn-success">Search</button>
+            <button class="btn mt-2 form-control search-button">Search</button>
         </form>
+
     </div>
+
 </div>
 <div class="container">
     {% block results %}
