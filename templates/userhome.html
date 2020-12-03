@@ -3,55 +3,63 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="form-group col border rounded m-4">
-            <div>
-                <form action="/course_search_name" id="course-search">
-                    <label for="course-name-input">Search for Course by Name: </label>
-                    <input type="search" class="form-control" name="course-name-input">
-                    <button class="btn btn-success mt-2">Search</button>
-                </form>
-            </div>
-            <div class="form-group">
-                <form action="/course_search_zip" id="zip-search">
-                    <label for="zip">Search for Courses by Zip: </label>
-                    <input type="search" class="form-control" name="course-zip">
-                    <button class="btn btn-success mt-2">Search</button>
-                </form>
-            </div>
-        </div>
-        <div class="form-group col border rounded m-4">
-            <div class="pt-5">
-                <form action="/user_search" id="user-username-search">
-                    <label for="user-username-input">Search Users by Username: </label>
-                    <input type="search" class="form-control" name="user-username-input">
-                    <button class="btn btn-success mt-2">Search</button>
-                </form>
-            </div>
-        </div>
+
+<div class="row " id="search-group">
+
+    <div class="form-group col-4">
+
+        <form action="/course_search_name" id="course-search">
+            <label for="course-name-input">Search for Course by Name: </label>
+            <input type="search" class="form-control" name="course-name-input">
+            <button class="btn mt-2 form-control search-button">Search</button>
+        </form>
+
     </div>
-    <hr>
-    <div class="row justify-content-center">
+
+    <div class="form-group col-4">
+        <form action="/course_search_zip" id="zip-search">
+            <label for="zip">Search for Courses by Zip: </label>
+            <input type="search" class="form-control" name="course-zip">
+            <button class="btn mt-2 form-control search-button">Search</button>
+        </form>
+    </div>
+
+    <div class="form-group col-4">
+
+        <form action="/user_search" id="user-username-search">
+            <label for="user-username-input">Search Users by Username: </label>
+            <input type="search" class="form-control" name="user-username-input">
+            <button class="btn mt-2 form-control search-button">Search</button>
+        </form>
+
+    </div>
+
+</div>
+<div class="container">
+    <div class="row justify-content-center card-row">
         {% for round in rounds %}
-        <div class="col-3 card text-left m-4">
-            <img class="card-img" src="{{round.user.avatar}}" alt="">
-            <div class="card-body">
-                <p>User: <a class="text-success" href="/users/{{round.user.id}}">{{round.user.username}}</a>
-                </p>
-                <p>Course: <a href="/course_details/{{round.course_id}}">
-                        <h4 class="display-6">{{round.course_name}}</h4>
-                    </a></p>
-
-                <p>{{round.score}}</p>
-                <p> {{round.date}}</p>
-                <a class="btn btn-info" href="/round_info/{{round.id}}">Round Info</a>
-
-
+        <div class="col-sm-6 col-md-2 card m-4 user-card">
+            <img class="card-img-top pt-2" src="{{round.user.avatar}}" alt="">
+            <div class="card-header">
+                <a href="/course_details/{{round.course_id}}">
+                    <h4 class="display-6">{{round.course_name}}</h4>
+                </a>
             </div>
-            {% if g.user.id == round.user.id %}
-            <button class="btn btn-danger delete-round" data-id="{{round.id}}">Delete Round</button>
-            {% endif %}
+            <ul class="list-group list-group-flush text-center">
+                <li class="list-group-item">User: <a class="text-success"
+                        href="/users/{{round.user.id}}">{{round.user.username}}</a>
+                </li>
+
+                <li class="list-group-item">{{round.score}}</li>
+                <li class="list-group-item"> {{round.date}}</li>
+                <a class="btn round-info" href="/round_info/{{round.id}}">Info</a>
+
+
+
+                {% if g.user.id == round.user.id %}
+                <button class="btn delete-round" data-id="{{round.id}}">Delete</button>
+                {% endif %}
+            </ul>
         </div>
         {% endfor %}
     </div>

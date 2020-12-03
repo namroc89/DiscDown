@@ -4,25 +4,28 @@
 
 {% block content %}
 <div class="container mb-5">
-    <h1 class="display-1 text-center">Register</h1>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <form method="POST">
-                {{form.hidden_tag()}}
-                {% for field in form 
-        if field.widget.input_type != 'hidden' %}
-                <div class="form-group">
-                    {{field.label}}
-                    {{field(class_="form-control")}}
-                    {% for err in field.errors %}
-                    {{err}}
-                    {% endfor %}
-                </div>
-                {% endfor %}
-                <button class="btn btn-primary">Submit</button>
-                <span class="float-right">Already have an account? <a href="/login">Login here</a></span>
 
-            </form>
+    <div class="row justify-content-center pt-4">
+        <div class="col-md-6 w-50" id="register-card">
+            <div class="m-3">
+                <form method="POST">
+                    {{form.hidden_tag()}}
+                    {% for field in form 
+        if field.widget.input_type != 'hidden' %}
+                    <div class="form-group">
+                        {{field.label}}
+                        {{field(class_="form-control")}}
+                        {% for err in field.errors %}
+                        {{err}}
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    <button class="btn login-submit">Submit</button>
+                    <span class="float-right register-prompt">Already have an account? <a href="/login">Login
+                            here</a></span>
+
+                </form>
+            </div>
         </div>
     </div>
 </div>
