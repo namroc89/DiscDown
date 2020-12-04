@@ -57,5 +57,5 @@ I have several other features that I would eventually like this application to h
 * Add more single page functionility
 
 ## Created by
-This project was created by Sam Corman || [Email](samcorman3@gmail.com) || [LinkedIn](www.linkedin.com/in/samcorman
-)
+This project was created by Sam Corman || <samcorman3@gmail.com> || [LinkedIn](https://www.linkedin.com/in/samcorman)
+
