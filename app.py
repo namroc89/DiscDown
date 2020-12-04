@@ -7,13 +7,22 @@ from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import LoginForm, RegisterForm, EditUser, NewRound
 from psycopg2.errors import UniqueViolation
-from secret.secret import API_KEY, NAME_SEARCH_SIG, ZIP_SEARCH_SIG, LOC_SEARCH_SIG, ID_SEARCH_SIG, PHOTO_SEARCH_SIG, HOLE_INFO_SIG
+# from secret.secret import API_KEY, NAME_SEARCH_SIG, ZIP_SEARCH_SIG, LOC_SEARCH_SIG, ID_SEARCH_SIG, PHOTO_SEARCH_SIG, HOLE_INFO_SIG
 
 app = Flask(__name__)
 
 ACTIVE_USER = "active_user_id"
 
+
 API_URL = "https://www.dgcoursereview.com/api_test/"
+
+API_KEY = os.environ.get('API_KEY', API_KEY)
+NAME_SEARCH_SIG = os.environ.get('NAME_SEARCH_SIG', NAME_SEARCH_SIG)
+ZIP_SEARCH_SIG = os.environ.get('ZIP_SEARCH_SIG', ZIP_SEARCH_SIG)
+LOC_SEARCH_SIG = os.environ.get('LOC_SEARCH_SIG', LOC_SEARCH_SIG)
+ID_SEARCH_SIG = os.environ.get('ID_SEARCH_SIG', ID_SEARCH_SIG)
+PHOTO_SEARCH_SIG = os.environ.get('PHOTO_SEARCH_SIG', PHOTO_SEARCH_SIG)
+HOLE_INFO_SIG = os.environ.get('HOLE_INFO_SIG', HOLE_INFO_SIG)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'DATABASE_URL', 'postgresql:///discgolf')
@@ -21,8 +30,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'veryverysecret')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.debug = True
+
+
 debug = DebugToolbarExtension(app)
+
 
 connect_db(app)
 db.create_all()
