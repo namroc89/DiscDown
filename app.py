@@ -15,11 +15,11 @@ ACTIVE_USER = "active_user_id"
 
 API_URL = "https://www.dgcoursereview.com/api_test/"
 
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABASE_URL', 'postgresql:///discgolf'))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+    'DATABASE_URL', 'postgresql:///discgolf')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
-app.config['SECRET_KEY'] = "hellomybaby12345"
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'veryverysecret')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.debug = True
 debug = DebugToolbarExtension(app)
