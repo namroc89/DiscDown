@@ -16,13 +16,16 @@ ACTIVE_USER = "active_user_id"
 
 API_URL = "https://www.dgcoursereview.com/api_test/"
 
-API_KEY = os.environ.get('API_KEY', API_KEY)
-NAME_SEARCH_SIG = os.environ.get('NAME_SEARCH_SIG', NAME_SEARCH_SIG)
-ZIP_SEARCH_SIG = os.environ.get('ZIP_SEARCH_SIG', ZIP_SEARCH_SIG)
-LOC_SEARCH_SIG = os.environ.get('LOC_SEARCH_SIG', LOC_SEARCH_SIG)
-ID_SEARCH_SIG = os.environ.get('ID_SEARCH_SIG', ID_SEARCH_SIG)
-PHOTO_SEARCH_SIG = os.environ.get('PHOTO_SEARCH_SIG', PHOTO_SEARCH_SIG)
-HOLE_INFO_SIG = os.environ.get('HOLE_INFO_SIG', HOLE_INFO_SIG)
+app.config['API_KEY'] = os.environ.get('API_KEY', API_KEY)
+app.config['NAME_SEARCH_SIG'] = os.environ.get(
+    'NAME_SEARCH_SIG', NAME_SEARCH_SIG)
+app.config['ZIP_SEARCH_SIG'] = os.environ.get('ZIP_SEARCH_SIG', ZIP_SEARCH_SIG)
+app.config['LOC_SEARCH_SIG '] = os.environ.get(
+    'LOC_SEARCH_SIG', LOC_SEARCH_SIG)
+app.config['ID_SEARCH_SIG'] = os.environ.get('ID_SEARCH_SIG', ID_SEARCH_SIG)
+app.config['PHOTO_SEARCH_SIG'] = os.environ.get(
+    'PHOTO_SEARCH_SIG', PHOTO_SEARCH_SIG)
+app.config['HOLE_INFO_SIG'] = os.environ.get('HOLE_INFO_SIG', HOLE_INFO_SIG)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'DATABASE_URL', 'postgresql:///discgolf')
@@ -65,7 +68,7 @@ def get_course_by_id(course_id):
     """A call to the API to gather course information based on the course id
     returns a single JSON course response"""
     res = requests.get(f"{API_URL}", params={
-                       'key': API_KEY, 'mode': 'crseinfo', 'id': course_id, 'sig': ID_SEARCH_SIG})
+                       'key': app.config['API_KEY'], 'mode': 'crseinfo', 'id': course_id, 'sig': app.config['ID_SEARCH_SIG']})
     if not res:
         return []
 
@@ -75,7 +78,7 @@ def get_course_by_id(course_id):
 def get_course_by_name(name):
     """search the API for courses by name. Returns list of JSON objects"""
     res = requests.get(f"{API_URL}", params={
-                       'key': API_KEY, 'mode': 'findname', 'name': name, 'sig': NAME_SEARCH_SIG})
+                       'key': app.config['API_KEY'], 'mode': 'findname', 'name': name, 'sig': app.config['NAME_SEARCH_SIG']})
     if not res:
         return []
     return res.json()
@@ -84,7 +87,7 @@ def get_course_by_name(name):
 def get_hole_info(course_id):
     """search hole information for selected course. Returns json list of holes and information"""
     res = requests.get(f"{API_URL}", params={
-        'key': API_KEY, 'mode': "holeinfo", 'id': course_id, 'sig': HOLE_INFO_SIG
+        'key': app.config['API_KEY'], 'mode': "holeinfo", 'id': course_id, 'sig': app.config['HOLE_INFO_SIG']
     })
     if not res:
         return []
@@ -94,7 +97,7 @@ def get_hole_info(course_id):
 def get_course_photo(course_id):
     """retreive a course photo from the API. Returns URL"""
     res = requests.get(f"{API_URL}", params={
-        'key': API_KEY, 'mode': "crsephto", 'id': course_id, 'sig': PHOTO_SEARCH_SIG
+        'key': app.config['API_KEY'], 'mode': "crsephto", 'id': course_id, 'sig': app.config['PHOTO_SEARCH_SIG']
     })
     if not res:
         return None
@@ -104,7 +107,7 @@ def get_course_photo(course_id):
 def search_by_zip(zip):
     """Searches API for course close to zip. Returns list of JSON objects"""
     res = requests.get(f"{API_URL}", params={
-        'key': API_KEY, 'mode': "findzip", 'zip': zip, 'sig': ZIP_SEARCH_SIG
+        'key': app.config['API_KEY'], 'mode': "findzip", 'zip': zip, 'sig': app.config['ZIP_SEARCH_SIG']
     })
     if not res:
         return []
