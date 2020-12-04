@@ -21,6 +21,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = "hellomybaby12345"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+app.debug = True
 debug = DebugToolbarExtension(app)
 
 connect_db(app)

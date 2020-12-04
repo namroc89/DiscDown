@@ -7,7 +7,7 @@
     <div class="row justify-content-center course-head mb-3 pb-3">
         <div class="col-8">
             <h1 class='display-2'>{{course.name}}</h1>
-            <h4>{{course.city}}, {{course.state}}</h4>
+            <h4 class="course-location">{{course.city}}, {{course.state}}</h4>
         </div>
         <div class="col-4">
             <img src="{{course.course_photo_url_medium}}" alt="">
@@ -73,8 +73,8 @@
                         <h2>Hole:{{hole.hole_num}}</h2>
                     </div>
                     <ul class="list-group list-group-flush text-center">
-                        <li class="list-group-item">Length:{{hole.tee_1_len}}</li>
-                        <li class="list-group-item">Par: {{hole.tee_1_par}}</li>
+                        <li class="list-group-item">Length: {{hole.tee_1_len}}</li>
+                        <li class="list-group-item"> Par: {{hole.tee_1_par}}</li>
 
                     </ul>
                 </div>
