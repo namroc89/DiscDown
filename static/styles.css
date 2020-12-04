@@ -161,3 +161,7 @@ h4 {
 .course-location {
   color: rgb(215, 194, 176);
 }
+
+.course-round {
+  height: 40%;
+}

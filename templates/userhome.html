@@ -39,7 +39,7 @@
     <div class="row justify-content-center card-row">
         {% for round in rounds %}
         <div class="col-sm-6 col-md-3 card m-4 user-card">
-            <img class="card-img-top pt-2" src="{{round.user.avatar}}" alt="">
+            <img class="card-img-top pt-2 h-50 " src="{{round.user.avatar}}" alt="">
             <div class="card-header text-center">
                 <a href="/course_details/{{round.course_id}}">
                     <h4 class="display-6">{{round.course_name}}</h4>

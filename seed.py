@@ -8,21 +8,32 @@ db.create_all()
 new_user1 = User.signup(username="natwil", first_name="Nate",
                         last_name="Williams", email='nate@mail.com', password='password')
 new_user1.id = 100
+new_user1.avatar = "https://ctl.s6img.com/society6/img/l_LKu9n8zevppxJpzuAzYozej6Y/w_700/prints/~artwork/s6-original-art-uploads/society6/uploads/misc/3d7d174ae4b7480db348f96793e06293/~~/retro-disc-golf-icon-prints.jpg?wait=0&attempt=0"
+
 new_user2 = User.signup(username="danove", first_name="Dan",
                         last_name="Overholt", email='dan@mail.com', password='password')
 new_user2.id = 101
+new_user2.avatar = "https://ctl.s6img.com/society6/img/lvNAinVJ8AZZfZR-ecfJMtrScME/w_700/prints/~artwork/s6-original-art-uploads/society6/uploads/misc/e3dac46891c54a0ba36df4a34e44a29c/~~/twilight-disc-golf-prints.jpg"
+
 new_user3 = User.signup(username="micgur", first_name="Michael",
                         last_name="Gurley", email='michael@mail.com', password='password')
 new_user3.id = 102
+new_user3.avatar = "https://ctl.s6img.com/society6/img/Y1O73EZqZ7Y0ApknUiV_C_U_nNQ/w_700/prints/~artwork/s6-0067/a/27638953_8937019/~~/disc-golf-abstract-basket-6-prints.jpg"
+
 new_user4 = User.signup(username="danher", first_name="Daniel",
                         last_name="Herbert", email='daniel@mail.com', password='password')
 new_user4.id = 103
+new_user4.avatar = "https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/disc-golf-products-for-men-stupid-tree-frisbee-golf-print-coumoliv.jpg"
+
 new_user5 = User.signup(username="kribro", first_name="Kris",
                         last_name="Broadley", email='kris@mail.com', password='password')
 new_user5.id = 104
+new_user5.avatar = "https://rlv.zcache.com/colorful_disc_golf_basket_poster-r55d17bd3975e4ff5bf3d9640c8ab7a9a_abw1_8byvr_307.jpg"
+
 new_user6 = User.signup(username="davjoc", first_name="David",
                         last_name="Jochems", email='david@mail.com', password='password')
 new_user6.id = 105
+new_user6.avatar = "https://cdna.artstation.com/p/assets/images/images/013/067/746/large/john-paul-cavara-hole-1-withbag-edited-1.jpg?1537902719"
 
 db.session.commit()
 
